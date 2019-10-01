@@ -3,6 +3,7 @@ import csv
 import os
 
 import cv2
+import imageio
 import keras
 import matplotlib.pyplot as plt
 import numpy as np
@@ -10,7 +11,6 @@ import sklearn
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 from keras.models import Sequential, Model
 from keras.layers import Cropping2D, Conv2D, Dropout, Flatten, Dense, Lambda
-from scipy import ndimage
 from sklearn.model_selection import train_test_split
 
 def build_model():
@@ -36,7 +36,7 @@ def load_samples(samples, augment=True):
     angles = []
 
     for row in samples:
-        center_img = ndimage.imread(row[0])
+        center_img = imageio.imread(row[0])
         center_angle = float(row[3])
         images += [center_img]
         angles += [center_angle]
@@ -48,8 +48,8 @@ def load_samples(samples, augment=True):
 
             # Use the left and right camera perspective
             correction = 0.22
-            left_img = ndimage.imread(row[1])
-            right_img = ndimage.imread(row[2])
+            left_img = imageio.imread(row[1])
+            right_img = imageio.imread(row[2])
             left_angle = center_angle + correction
             right_angle = center_angle - correction
             images += [left_img, right_img]
